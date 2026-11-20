@@ -311,7 +311,8 @@ def admin():
     return render_template(
         "admin.html", foods=foods, orders=orders
     )
+initialize_database()
+
 if __name__ == "__main__":
-    initialize_database()
     print("FoodieHub Online Food Ordering System starting...")
     app.run(debug=True)
