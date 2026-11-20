@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodieHub | Delicious Food Delivered</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/" class="logo">🍔 FoodieHub</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/orders">My Orders</a>
+        <a href="/admin">Admin</a>
+        <a href="/cart" class="cart-link">🛒 Cart</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="tagline">FRESH FOOD • FAST DELIVERY</span>
+        <h1>Delicious Food,<br><span>Delivered To You.</span></h1>
+        <p>Discover amazing meals from our kitchen. Fresh ingredients, incredible taste and quick delivery!</p>
+        <a href="/menu" class="btn">Explore Menu →</a>
+    </div>
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700" alt="Delicious pizza">
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">🚀 <h3>Fast Delivery</h3><p>Quick doorstep delivery</p></div>
+    <div class="feature">🥗 <h3>Fresh Food</h3><p>Fresh ingredients daily</p></div>
+    <div class="feature">⭐ <h3>Best Quality</h3><p>Delicious meals every time</p></div>
+</section>
+
+<section class="food-section">
+    <div class="section-heading">
+        <div>
+            <span class="tagline">OUR SPECIALITIES</span>
+            <h2>Popular Dishes</h2>
+        </div>
+        <a href="/menu" class="view-link">View All →</a>
+    </div>
+
+    <div class="food-grid">
+        {% for food in foods %}
+        <div class="food-card">
+            <img src="{{ food.image }}" alt="{{ food.name }}" loading="lazy">
+            <div class="food-info">
+                <span class="category">{{ food.category }}</span>
+                <h3>{{ food.name }}</h3>
+                <p>{{ food.description }}</p>
+                <div class="food-bottom">
+                    <strong>₹{{ "%.2f"|format(food.price) }}</strong>
+                    <a href="/add-to-cart/{{ food.id }}" class="add-btn">+ Add</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p>No food items available.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<footer>
+    <h2>🍔 FoodieHub</h2>
+    <p>Good food, good mood. © 2026 FoodieHub. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

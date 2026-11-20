@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Menu | FoodieHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/" class="logo">🍔 FoodieHub</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/orders">My Orders</a>
+        <a href="/admin">Admin</a>
+        <a href="/cart" class="cart-link">🛒 Cart</a>
+    </nav>
+</header>
+
+<section class="food-section">
+    <div class="section-heading">
+        <div>
+            <span class="tagline">EXPLORE OUR MENU</span>
+            <h2>Find Your Favourite Food</h2>
+        </div>
+    </div>
+
+    <form action="/menu" method="GET" class="search-form">
+        <input type="text" name="search" placeholder="Search delicious food..." value="{{ request.args.get('search', '') }}">
+
+        <select name="category">
+            <option value="">All Categories</option>
+            {% for cat in ['Pizza', 'Burger', 'Snacks', 'Indian', 'Drinks', 'Dessert'] %}
+            <option value="{{ cat }}" {% if request.args.get('category') == cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn">Search</button>
+    </form>
+
+    <div class="food-grid">
+        {% for food in foods %}
+        <div class="food-card">
+            <img src="{{ food.image }}" alt="{{ food.name }}" loading="lazy">
+            <div class="food-info">
+                <span class="category">{{ food.category }}</span>
+                <h3>{{ food.name }}</h3>
+                <p>{{ food.description }}</p>
+                <div class="food-bottom">
+                    <strong>₹{{ "%.2f"|format(food.price) }}</strong>
+                    <a href="/add-to-cart/{{ food.id }}" class="add-btn">+ Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p>No food found. Try another search.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<footer>
+    <h2>🍔 FoodieHub</h2>
+    <p>Good food, good mood. © 2026 FoodieHub.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | FoodieHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="/" class="logo">🍔 FoodieHub</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/orders">My Orders</a>
+        <a href="/admin">Admin</a>
+        <a href="/cart" class="cart-link">🛒 Cart</a>
+    </nav>
+</header>
+
+<section class="food-section">
+    <span class="tagline">YOUR SELECTION</span>
+    <h2>Shopping Cart 🛒</h2>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if items %}
+    <div class="cart-container">
+
+        <div class="cart-items">
+            {% for item in items %}
+            <div class="cart-item">
+                <div>
+                    <h3>{{ item.food.name }}</h3>
+                    <p>₹{{ "%.2f"|format(item.food.price) }} each</p>
+                </div>
+
+                <form action="/update-cart/{{ item.food.id }}" method="POST">
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="20">
+                    <button type="submit" class="update-btn">Update</button>
+                </form>
+
+                <strong>₹{{ "%.2f"|format(item.subtotal) }}</strong>
+
+                <a href="/remove-from-cart/{{ item.food.id }}" class="remove-btn">Remove</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>₹{{ "%.2f"|format(total) }}</strong>
+            </div>
+            <div class="summary-row">
+                <span>Delivery</span>
+                <strong>FREE</strong>
+            </div>
+            <hr>
+            <div class="summary-row total-row">
+                <span>Total</span>
+                <strong>₹{{ "%.2f"|format(total) }}</strong>
+            </div>
+            <a href="/checkout" class="btn checkout-btn">Proceed to Checkout →</a>
+            <a href="/menu" class="continue-link">Continue Shopping</a>
+        </div>
+
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <div>🛒</div>
+        <h3>Your cart is empty!</h3>
+        <p>Add some delicious food to get started.</p>
+        <a href="/menu" class="btn">Explore Menu</a>
+    </div>
+    {% endif %}
+</section>
+
+<footer>
+    <h2>🍔 FoodieHub</h2>
+    <p>Good food, good mood. © 2026 FoodieHub.</p>
+</footer>
+
+</body>
+</html>
